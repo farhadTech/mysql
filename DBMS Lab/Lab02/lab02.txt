@@ -34,3 +34,8 @@ alter table students
 drop primary key;
 alter table students
 add primary key;
+
+-- add two primary keys
+alter table students
+add primary key(id, s_name);
+
