@@ -22,3 +22,15 @@ drop temp;
 -- add primary key after table creating
 alter table students
 add primary key(id);
+
+-- drop primary key
+alter table students
+drop primary key;
+
+-- we can not modify primary key.
+-- first remove the primary key then add primary key.
+
+alter table students
+drop primary key;
+alter table students
+add primary key;
