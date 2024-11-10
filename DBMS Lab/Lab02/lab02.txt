@@ -1,0 +1,9 @@
+create database test;
+create table students(
+	id varchar(10),
+	name varchar(100),
+	cr_com int,
+	cgpa decimal(3, 2)
+);
+
+
