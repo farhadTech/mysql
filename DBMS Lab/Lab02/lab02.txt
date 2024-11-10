@@ -18,3 +18,7 @@ add temp int;
 -- drop column
 alter table students
 drop temp;
+
+-- add primary key after table creating
+alter table students
+add primary key(id);
