@@ -39,3 +39,11 @@ add primary key;
 alter table students
 add primary key(id, s_name);
 
+-- create another table
+create table courses(
+  c_code varchar(50) primary key,
+  c_title varchar(100),
+  credit int,
+  type varchar(100)
+);
+
