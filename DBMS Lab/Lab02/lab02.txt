@@ -15,3 +15,6 @@ change name s_name varchar(200);
 alter table students
 add temp int;
 
+-- drop column
+alter table students
+drop temp;
