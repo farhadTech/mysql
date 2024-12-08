@@ -1,73 +1,225 @@
-#List all departments:
+#1. List all departments:
 SELECT dept_name FROM department;
 
-#Find the names of all instructors:
+#2. Find the names of all instructors:
 SELECT name FROM instructor;
 
-#Retrieve all courses offered by the Biology department:
+#3. Retrieve all courses offered by the Biology department:
 SELECT title
 FROM course
 WHERE dept_name = 'Biology';
 
-#Show the capacity of the 'Watson' building:
+#4. Show the capacity of the 'Watson' building:
 SELECT capacity
 FROM classroom
 WHERE building = 'Watson';
 
-#List all students in the 'Comp. Sci.' department:
+#5. List all students in the 'Comp. Sci.' department:
 SELECT name
 FROM student
 WHERE dept_name = 'Comp. Sci.';
 
-#Find all courses with credits greater than 3:
+#6. Find all courses with credits greater than 3:
 SELECT title
 FROM course
 WHERE credits > 3;
 
-#Retrieve the names and salaries of instructors earning more than 70,000:
+#7. Retrieve the names and salaries of instructors earning more than 70,000:
 SELECT name, salary
 FROM instructor
 WHERE salary > 70000;
 
-#Display all sections offered in the 'Fall' semester of 2017:
+#8. Display all sections offered in the 'Fall' semester of 2017:
 SELECT *
 FROM section
 WHERE semester = 'Fall' AND year = 2017;
 
-#Find the names of students who have earned more than 50 total credits:
+#9. Find the names of students who have earned more than 50 total credits:
 SELECT name
 FROM student
 WHERE tot_cred > 50;
 
-#List all courses along with their prerequisites:SELECT c.title AS course, p.prereq_id
+#10. List all courses along with their prerequisites:SELECT c.title AS course, p.prereq_id
+SELECT c.course_id
 FROM course c
 JOIN prereq p ON c.course_id = p.course_id;
 
-#Display the room numbers in the 'Taylor' building:
+#11. Display the room numbers in the 'Taylor' building:
 SELECT room_number
 FROM classroom
 WHERE building = 'Taylor';
 
-#Retrieve the name and department of all instructors:
+#12. Retrieve the name and department of all instructors:
 SELECT name, dept_name
 FROM instructor;
 
-#Find all students with a total credit of 0:
+#13. Find all students with a total credit of 0:
 SELECT name
 FROM student
 WHERE tot_cred = 0;
 
-#Show all sections that take place in the 'Packard' building:
+#14. Show all sections that take place in the 'Packard' building:
 SELECT *
 FROM section
 WHERE building = 'Packard';
 
-#List all courses taught by 'Srinivasan':
+#15. List all courses taught by 'Srinivasan':
 SELECT c.title
 FROM course c
 JOIN teaches t ON c.course_id = t.course_id
 JOIN instructor i ON t.ID = i.ID
 WHERE i.name = 'Srinivasan';
 
+#16. Retrieve all time slots that start at or after 10 AM.
+select time_slot_id from time_slot
+where start_hr >= 10;
+
+#17. Find all advisors for student '12345'.
+select advisor.i_id from advisor
+join student on advisor.s_ID = student.ID
+where student.ID = 12345;
+
+#18. List all departments located in the 'Taylor' building.
+SELECT DISTINCT d.dept_name
+FROM department d
+JOIN classroom c ON d.building = c.building
+WHERE c.building = 'Taylor';
+
+#19. Show all students along with their assigned advisors:
+SELECT s.name AS student_name, a.i_ID AS advisor_id
+FROM student s
+JOIN advisor a ON s.ID = a.s_ID;
 
 
+#20. Retrieve the budget of the 'Finance' department:
+SELECT budget
+FROM department
+WHERE dept_name = 'Finance';
+
+#21. Find the names of students who took 'CS-101' in 'Fall 2017':
+SELECT s.name
+FROM student s
+JOIN takes t ON s.ID = t.ID
+WHERE t.course_id = 'CS-101' AND t.semester = 'Fall' AND t.year = 2017;
+
+#22. List the titles of courses taught by 'Crick':
+SELECT c.title
+FROM course c
+JOIN teaches t ON c.course_id = t.course_id
+JOIN instructor i ON t.ID = i.ID
+WHERE i.name = 'Crick';
+
+#23. Retrieve the total budget for all departments in the 'Taylor' building:
+SELECT SUM(d.budget) AS total_budget
+FROM department d
+JOIN classroom c ON d.building = c.building
+WHERE c.building = 'Taylor';
+
+#24. Find the average salary of instructors in each department:
+SELECT dept_name, AVG(salary) AS avg_salary
+FROM instructor
+GROUP BY dept_name;
+
+#25. Show all students who are taking 'Spring 2018' courses in the 'Watson' building:
+SELECT DISTINCT s.name
+FROM student s
+JOIN takes t ON s.ID = t.ID
+JOIN section sec ON t.course_id = sec.course_id AND t.sec_id = sec.sec_id
+WHERE sec.building = 'Watson' AND sec.semester = 'Spring' AND sec.year = 2018;
+
+#26. List all courses that have more than one prerequisite:
+SELECT course_id
+FROM prereq
+GROUP BY course_id
+HAVING COUNT(prereq_id) > 1;
+
+#27. Find the departments with a budget less than 75,000:
+SELECT dept_name
+FROM department
+WHERE budget < 75000;
+
+#28. Retrieve all time slots that span more than an hour:
+SELECT *
+FROM time_slot
+WHERE (end_hr * 60 + end_min) - (start_hr * 60 + start_min) > 60;
+
+#29. Display the names of instructors who have taught in the 'Taylor' building:
+SELECT DISTINCT i.name
+FROM instructor i
+JOIN teaches t ON i.ID = t.ID
+JOIN section sec ON t.course_id = sec.course_id AND t.sec_id = sec.sec_id
+WHERE sec.building = 'Taylor';
+
+#30. Show the highest total credits among all students:
+SELECT MAX(tot_cred) AS highest_credits
+FROM student;
+
+#31. Find the instructor teaching the most courses:
+SELECT i.name, COUNT(t.course_id) AS course_count
+FROM instructor i
+JOIN teaches t ON i.ID = t.ID
+GROUP BY i.ID
+ORDER BY course_count DESC
+LIMIT 1;
+
+#32 List the courses that no students are enrolled in:
+SELECT c.title
+FROM course c
+LEFT JOIN takes t ON c.course_id = t.course_id
+WHERE t.ID IS NULL;
+
+#33 Retrieve the names of students who failed at least one course:
+SELECT DISTINCT s.name
+FROM student s
+JOIN takes t ON s.ID = t.ID
+WHERE t.grade < 'C'; -- Assuming grades lower than 'C' indicate failure.
+
+#34 Find the building with the largest total classroom capacity:
+SELECT building, SUM(capacity) AS total_capacity
+FROM classroom
+GROUP BY building
+ORDER BY total_capacity DESC
+LIMIT 1;
+
+#35 List the names of students advised by 'Einstein':
+SELECT s.name
+FROM student s
+JOIN advisor a ON s.ID = a.s_ID
+JOIN instructor i ON a.i_ID = i.ID
+WHERE i.name = 'Einstein';
+
+# Display the titles of courses taken by 'Zhang':
+SELECT c.title
+FROM course c
+JOIN takes t ON c.course_id = t.course_id
+JOIN student s ON t.ID = s.ID
+WHERE s.name = 'Zhang';
+# Show the names of students who have completed all courses in the 'Comp. Sci.' department:
+SELECT s.name
+FROM student s
+WHERE NOT EXISTS (
+    SELECT c.course_id
+    FROM course c
+    WHERE c.dept_name = 'Comp. Sci.'
+    AND NOT EXISTS (
+        SELECT t.course_id
+        FROM takes t
+        WHERE t.course_id = c.course_id AND t.ID = s.ID
+    )
+);
+# Retrieve all instructors who have never taught a course:
+SELECT i.name
+FROM instructor i
+LEFT JOIN teaches t ON i.ID = t.ID
+WHERE t.course_id IS NULL;
+# Find all courses that have prerequisites from a different department:
+SELECT c.course_id, c.title, c.dept_name, p.prereq_id
+FROM course c
+JOIN prereq p ON c.course_id = p.course_id
+JOIN course prereq_course ON p.prereq_id = prereq_course.course_id
+WHERE c.dept_name != prereq_course.dept_name;
+# List all departments where no students are enrolled:
+SELECT d.dept_name
+FROM department d
+LEFT JOIN student s ON d.dept_name = s.dept_name
+WHERE s.ID IS NULL;
