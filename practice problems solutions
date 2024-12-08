@@ -1,0 +1,73 @@
+#List all departments:
+SELECT dept_name FROM department;
+
+#Find the names of all instructors:
+SELECT name FROM instructor;
+
+#Retrieve all courses offered by the Biology department:
+SELECT title
+FROM course
+WHERE dept_name = 'Biology';
+
+#Show the capacity of the 'Watson' building:
+SELECT capacity
+FROM classroom
+WHERE building = 'Watson';
+
+#List all students in the 'Comp. Sci.' department:
+SELECT name
+FROM student
+WHERE dept_name = 'Comp. Sci.';
+
+#Find all courses with credits greater than 3:
+SELECT title
+FROM course
+WHERE credits > 3;
+
+#Retrieve the names and salaries of instructors earning more than 70,000:
+SELECT name, salary
+FROM instructor
+WHERE salary > 70000;
+
+#Display all sections offered in the 'Fall' semester of 2017:
+SELECT *
+FROM section
+WHERE semester = 'Fall' AND year = 2017;
+
+#Find the names of students who have earned more than 50 total credits:
+SELECT name
+FROM student
+WHERE tot_cred > 50;
+
+#List all courses along with their prerequisites:SELECT c.title AS course, p.prereq_id
+FROM course c
+JOIN prereq p ON c.course_id = p.course_id;
+
+#Display the room numbers in the 'Taylor' building:
+SELECT room_number
+FROM classroom
+WHERE building = 'Taylor';
+
+#Retrieve the name and department of all instructors:
+SELECT name, dept_name
+FROM instructor;
+
+#Find all students with a total credit of 0:
+SELECT name
+FROM student
+WHERE tot_cred = 0;
+
+#Show all sections that take place in the 'Packard' building:
+SELECT *
+FROM section
+WHERE building = 'Packard';
+
+#List all courses taught by 'Srinivasan':
+SELECT c.title
+FROM course c
+JOIN teaches t ON c.course_id = t.course_id
+JOIN instructor i ON t.ID = i.ID
+WHERE i.name = 'Srinivasan';
+
+
+
